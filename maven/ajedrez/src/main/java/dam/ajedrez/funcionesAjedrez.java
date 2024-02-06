@@ -1,7 +1,15 @@
-package ejercicios;
+package dam.ajedrez;
 
 public class funcionesAjedrez {
 
+    
+    /** 
+     * @param posicionMoverI
+     * @param posicionMoverJ
+     * @param tablero[][]
+     * @param filas
+     * @param columnas
+     */
     public static void MoverTorre(int posicionMoverI, int posicionMoverJ, char tablero[][], int filas, int columnas) {
         int posicionMoverI_t = posicionMoverI;
         while (posicionMoverI_t > 0 && (tablero[posicionMoverI_t - 1][posicionMoverJ] == ' '
@@ -35,6 +43,14 @@ public class funcionesAjedrez {
         }
     }
 
+    
+    /** 
+     * @param posicionMoverI
+     * @param posicionMoverJ
+     * @param tablero[][]
+     * @param filas
+     * @param columnas
+     */
     public static void MoverAlfil(int posicionMoverI, int posicionMoverJ, char tablero[][], int filas, int columnas) {
         int posicionMoverI_a = posicionMoverI;
         int posicionMoverJ_a = posicionMoverJ;

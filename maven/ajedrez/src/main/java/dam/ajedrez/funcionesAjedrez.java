@@ -155,7 +155,6 @@ public class funcionesAjedrez {
                         || tablero[posicionMoverI - 2][posicionMoverJ - 1] == '.'))
             tablero[posicionMoverI - 2][posicionMoverJ - 1] = '.';
     } 
-
     public static int ConvertChar(char letra){
         switch (letra) {
                 case 'A': return 1;

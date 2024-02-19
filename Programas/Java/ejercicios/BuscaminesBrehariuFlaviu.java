@@ -6,16 +6,18 @@ public class BuscaminesBrehariuFlaviu {
     static char tapado = ' ';
     public static void main(String[] args) {
         char tableroVisible[][] = creaTableroVisible();
-        int Qminas = Teclat.lligInt("Cuantas minas quieres que tenga el tablero?(3-25): ", 3, 25);
+        int minasMax = (tableroVisible.length * tableroVisible[0].length);
+        int Qminas = Teclat.lligInt("Cuantas minas quieres que tenga el tablero?(3-"+minasMax+"): ", 3, minasMax);
         boolean tableroMinas[][] = creaTableroMinas(tableroVisible, Qminas);
         boolean exit = false;
-        int posicionC;
-        int posicionF;
-        while (exit = false) {
-        posicionF = Teclat.lligInt("Dame la posición de la casilla con la que desea interactuar.\nFila",1,tableroVisible[0].length) - 1;
-        posicionC = Teclat.lligInt("Columna",1,tableroVisible.length) - 1;
-
-        }        
+        int posicionC = 0;
+        int posicionF = 0;
+        do{
+            posicionF = Teclat.lligInt("Dame la posición de la casilla con la que desea interactuar.\nFila",1,tableroVisible[0].length) - 1;
+            posicionC = Teclat.lligInt("Columna",1,tableroVisible.length) - 1;
+        }while(posicionF > 0 && posicionC > 0 && posicionF < tableroVisible.length && posicionC < tableroVisible.length);        
+        int qma = qma(tableroMinas, posicionF, posicionC);
+        System.out.println(qma);
     }
 
     private static char[][] creaTableroVisible(){
@@ -23,8 +25,8 @@ public class BuscaminesBrehariuFlaviu {
         int filas = Teclat.lligInt("Dame el numero de filas del busaminas", 5, 15);
         int columnas = Teclat.lligInt("Dame el numero de columnas del busaminas", 5, 15);
         char tablero[][] = new char[filas][columnas];
-        for (int i = 0; i < tablero[0].length; i++) {
-            for (int j = 0; j < tablero.length; j++) {
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
                 tablero[i][j] = tapado;
             }
         }
@@ -32,28 +34,33 @@ public class BuscaminesBrehariuFlaviu {
     }
 
     private static boolean[][] creaTableroMinas(char tableroVisible[][] ,int Qminas){
-        boolean tablero[][] = new boolean[tableroVisible[0].length][tableroVisible.length];
+        boolean tablero[][] = new boolean[tableroVisible.length][tableroVisible[0].length];
         int filaAleatoria;
         int columnaAleatoria;
-        for (int i = 0; i < tablero[0].length; i++) {
-            for (int j = 0; j < tablero.length; j++) {
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
                 tablero[i][j] = false;
             }
         }
         Random random = new Random();
         for (int i = 0; i < Qminas; i++) {
-            filaAleatoria = random.nextInt(tablero[0].length);
-            columnaAleatoria = random.nextInt(tablero.length);
+            filaAleatoria = random.nextInt(tablero.length);
+            columnaAleatoria = random.nextInt(tablero[0].length);
+            if (tablero[filaAleatoria][columnaAleatoria] == false){
             tablero[filaAleatoria][columnaAleatoria] = true;
+            }else{
+                i--;
+            }
         }
-        /* Esta parte solo muestra la matriz tableroMinas
-        for (int i = 0; i < tablero[0].length; i++) {
-            for (int j = 0; j < tablero.length; j++) {
-                System.out.print("[" + tablero[i][j] + "]");
+        // Esta parte solo muestra la matriz tableroMinas
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+            //    System.out.print("[" + tablero[i][j] + "]");
+                if(tablero[i][j] == false) System.out.print("[F] ");
+                else System.out.print("[T] ");
             }
             System.out.println();
         }
-        */
         return tablero;
     }
 

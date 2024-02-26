@@ -239,7 +239,7 @@ public class Teclat {
     public static int lligInt(String missatge, int min, int max) {
         int numero;
         do {
-            demana(missatge + " (" + min + " a " + max + ")");
+            demana(missatge);
             numero = Teclat.lligInt();
 
         } while (numero < min || numero > max);

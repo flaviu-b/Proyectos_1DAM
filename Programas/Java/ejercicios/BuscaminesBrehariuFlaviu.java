@@ -14,33 +14,38 @@ public class BuscaminesBrehariuFlaviu {
         boolean mostrarMinas;
         char tableroVisible[][] = creaTableroVisible();
         int minasMax = (tableroVisible.length * tableroVisible[0].length);
-        int Qminas = Teclat.lligInt("Cuantas minas quieres que tenga el tablero?(3-" + minasMax + "): ", 3, minasMax);
-        boolean tableroMinas[][] = creaTableroMinas(tableroVisible, Qminas);
+        int qMinas = Teclat.lligInt("Cuantas minas quieres que tenga el tablero?(3-" + minasMax + "): ", 3, minasMax);
+        boolean tableroMinas[][] = creaTableroMinas(tableroVisible, qMinas);
         mostrarTablero(tableroVisible, tableroMinas, false);
         int posicionC = 0;
         int posicionF = 0;
         int opcion;
         boolean explota = false;
+        int qdestapadas;
         while (true) {
-         opcion = Teclat.lligInt("Que opcion desea realizar?\n1 --> Bandera\n2 --> Quitar bandera\n3 --> Picar\n", 1, 3);
-         posicionF = Teclat.lligInt("Indique la posición sobre la que desea actur\n(Fila):", 1,tableroVisible.length)-1;
-         posicionC = Teclat.lligInt("(Columnas)", 1,tableroVisible[0].length )-1;
-         switch (opcion) {
-            case 1:
-            tableroVisible[posicionF][posicionC] = 'P';
-                break;
-            case 2:
-            tableroVisible[posicionF][posicionC] = 'X';
-            break;
-            case 3:
-            explota = pica(tableroVisible,tableroMinas,posicionF,posicionC);    
-                break;
-            default:
-            System.out.println("Debe introdicir una de las 2 opciones (1-2)");
-                break;
-         }
-         mostrarTablero(tableroVisible, tableroMinas, explota);
-         if (explota) break;
+            opcion = Teclat.lligInt("Que opcion desea realizar?\n1 --> Bandera\n2 --> Quitar bandera\n3 --> Picar\n", 1,
+                    3);
+            posicionF = Teclat.lligInt("Indique la posición sobre la que desea actur\n(Fila):", 1,
+                    tableroVisible.length) - 1;
+            posicionC = Teclat.lligInt("(Columnas)", 1, tableroVisible[0].length) - 1;
+            switch (opcion) {
+                case 1:
+                    tableroVisible[posicionF][posicionC] = 'P';
+                    break;
+                case 2:
+                    tableroVisible[posicionF][posicionC] = 'X';
+                    break;
+                case 3:
+                    explota = pica(tableroVisible, tableroMinas, posicionF, posicionC);
+                    break;
+                default:
+                    System.out.println("Debe introdicir una de las 2 opciones (1-2)");
+                    break;
+            }
+            mostrarTablero(tableroVisible, tableroMinas, explota);
+            if (explota) break;
+            qdestapadas = qdestapadas(tableroVisible);
+            if (qdestapadas == minasMax - qMinas) break;
         }
     }
 
@@ -93,10 +98,10 @@ public class BuscaminesBrehariuFlaviu {
     // cantidad de minas adyacentes
     private static int qma(boolean tableroMinas[][], int posicionF, int posicionC) {
         int contador = 0;
-        if (posicionF - 1 > 0 && tableroMinas[posicionF - 1][posicionC] == true) {
+        if (posicionF - 1 >= 0 && tableroMinas[posicionF - 1][posicionC] == true) {
             contador++;
         }
-        if (posicionF - 1 > 0 && posicionC + 1 < tableroMinas.length && tableroMinas[posicionF - 1][posicionC + 1]) {
+        if (posicionF - 1 >= 0 && posicionC + 1 < tableroMinas.length && tableroMinas[posicionF - 1][posicionC + 1]) {
             contador++;
         }
         if (posicionC + 1 < tableroMinas.length && tableroMinas[posicionF][posicionC + 1]) {
@@ -109,13 +114,13 @@ public class BuscaminesBrehariuFlaviu {
         if (posicionF + 1 < tableroMinas[0].length && tableroMinas[posicionF + 1][posicionC]) {
             contador++;
         }
-        if (posicionC - 1 > 0 && posicionF + 1 < tableroMinas[0].length && tableroMinas[posicionF + 1][posicionC - 1]) {
+        if (posicionC - 1 >= 0 && posicionF + 1 < tableroMinas[0].length && tableroMinas[posicionF + 1][posicionC - 1]) {
             contador++;
         }
-        if (posicionC - 1 > 0 && tableroMinas[posicionF][posicionC - 1]) {
+        if (posicionC - 1 >= 0 && tableroMinas[posicionF][posicionC - 1]) {
             contador++;
         }
-        if (posicionC - 1 > 0 && posicionF - 1 > 0 && tableroMinas[posicionF - 1][posicionC - 1]) {
+        if (posicionC - 1 >= 0 && posicionF - 1 >= 0 && tableroMinas[posicionF - 1][posicionC - 1]) {
             contador++;
         }
 
@@ -124,10 +129,12 @@ public class BuscaminesBrehariuFlaviu {
 
     private static boolean destapada(char tableroVisible[][], int posicionF, int posicionC) {
 
-        if (tableroVisible[posicionF][posicionC] != 'X')
-            return false;
-        else
+        if (tableroVisible[posicionF][posicionC] == ' ' || tableroVisible[posicionF][posicionC] == '1' || tableroVisible[posicionF][posicionC] == '2'
+        || tableroVisible[posicionF][posicionC] == '3' || tableroVisible[posicionF][posicionC] == '4' || tableroVisible[posicionF][posicionC] == '5'
+        || tableroVisible[posicionF][posicionC] == '6' || tableroVisible[posicionF][posicionC] == '7' || tableroVisible[posicionF][posicionC] == '8')
             return true;
+        else
+            return false;
     }
 
     private static int qdestapadas(char tableroVisible[][]) {
@@ -142,22 +149,55 @@ public class BuscaminesBrehariuFlaviu {
     }
 
     private static void mostrarTablero(char tableroVisible[][], boolean tableroMinas[][], boolean mostrarMinas) {
+        int numVertical = 0;
         if (mostrarMinas) {
+            System.out.print("  ");
+            for (int i = 0; i < tableroVisible[0].length; i++) {
+                if (i < 9) System.out.print(" " + (i+1) + " ");
+                else System.out.print(" " + (i+1));
+            }
+            System.out.println();
             for (int i = 0; i < tableroMinas.length; i++) {
+                if (i < 9) System.out.print((numVertical+1) + " ");
+                else System.out.print((numVertical+1));
                 for (int j = 0; j < tableroMinas[i].length; j++) {
                     if (tableroMinas[i][j])
                         tableroVisible[i][j] = '#';
                     System.out.print("[" + tableroVisible[i][j] + "]");
                 }
+                System.out.print(" " + (numVertical+1));
+                numVertical++;
                 System.out.println();
             }
+            System.out.print("  ");
+            for (int i = 0; i < tableroVisible[0].length; i++) {
+                if (i < 9) System.out.print(" " + (i+1) + " ");
+                else System.out.print(" " + (i+1));
+            }
+            System.out.println();
         } else {
+            System.out.print("  ");
+            for (int i = 0; i < tableroVisible[0].length; i++) {
+                if (i < 9) System.out.print(" " + (i+1) + " ");
+                else System.out.print(" " + (i+1));
+            }
+            System.out.println();
             for (int i = 0; i < tableroMinas.length; i++) {
+                if (i < 9) System.out.print((numVertical+1) + " ");
+                else System.out.print((numVertical+1));
                 for (int j = 0; j < tableroMinas[0].length; j++) {
                     System.out.print("[" + tableroVisible[i][j] + "]");
                 }
+                System.out.print(" " + (numVertical+1));
+                numVertical++;
                 System.out.println();
             }
+            System.out.print("  ");
+            for (int i = 0; i < tableroVisible[0].length; i++) {
+                if (i < 9) System.out.print(" " + (i+1) + " ");
+                else System.out.print(" " + (i+1));            
+            }
+            System.out.println();
 
         }
 
@@ -169,7 +209,7 @@ public class BuscaminesBrehariuFlaviu {
 
     private static boolean pica(char tableroVisible[][], boolean tableroMinas[][], int posicionF, int posicionC) {
         if (!minada(tableroMinas, posicionF, posicionC)) {
-            destapa(tableroVisible,tableroMinas,posicionF,posicionC);
+            destapa(tableroVisible, tableroMinas, posicionF, posicionC);
             return false;
         } else {
             return true;
@@ -177,27 +217,36 @@ public class BuscaminesBrehariuFlaviu {
     }
 
     private static void destapa(char tableroVisible[][], boolean tableroMinas[][], int posicionF, int posicionC) {
+        //mostrarTablero(tableroVisible, tableroMinas, false);
+        //System.out.println("............................................................................................");
         if (tableroVisible[posicionF][posicionC] != ' ' && tableroVisible[posicionF][posicionC] != 'P'
                 && tableroVisible[posicionF][posicionC] != '1' && tableroVisible[posicionF][posicionC] != '2'
                 && tableroVisible[posicionF][posicionC] != '3' && tableroVisible[posicionF][posicionC] != '4'
                 && tableroVisible[posicionF][posicionC] != '5' && tableroVisible[posicionF][posicionC] != '6'
                 && tableroVisible[posicionF][posicionC] != '7' && tableroVisible[posicionF][posicionC] != '8') {
-            int qma = qma(tableroMinas,posicionF,posicionC);
+            int qma = qma(tableroMinas, posicionF, posicionC);
             if (qma == 0) {
                 tableroVisible[posicionF][posicionC] = ' ';
-                if (posicionF - 1 > 0) destapa(tableroVisible,tableroMinas,posicionF - 1,posicionC);
-                if (posicionF - 1 > 0 && posicionC + 1 < tableroVisible[0].length) destapa(tableroVisible,tableroMinas,posicionF -1 ,posicionC + 1);
-                if (posicionC + 1 < tableroVisible[0].length) destapa(tableroVisible,tableroMinas,posicionF,posicionC + 1);
-                if (posicionF + 1 < tableroVisible.length && posicionC + 1 < tableroVisible[0].length) destapa(tableroVisible,tableroMinas,posicionF + 1,posicionC + 1);
-                if (posicionF + 1 < tableroVisible.length) destapa(tableroVisible,tableroMinas,posicionF + 1,posicionC);
-                if (posicionF + 1 < tableroVisible.length && posicionC - 1 > 0) destapa(tableroVisible,tableroMinas,posicionF + tableroVisible.length,posicionC - 0);
-                if (posicionC - 1 > 0)  destapa(tableroVisible,tableroMinas,posicionF,posicionC - 1);
-                if (posicionF - 1 > 0 && posicionC - 1 > 0)destapa(tableroVisible,tableroMinas,posicionF - 1,posicionC - 1);
-            }else{
+                if (posicionF - 1 >= 0)
+                    destapa(tableroVisible, tableroMinas, posicionF - 1, posicionC);
+                if (posicionF - 1 >= 0 && posicionC + 1 < tableroVisible[0].length)
+                    destapa(tableroVisible, tableroMinas, posicionF - 1, posicionC + 1);
+                if (posicionC + 1 < tableroVisible[0].length)
+                    destapa(tableroVisible, tableroMinas, posicionF, posicionC + 1);
+                if (posicionF + 1 < tableroVisible.length && posicionC + 1 < tableroVisible[0].length)
+                    destapa(tableroVisible, tableroMinas, posicionF + 1, posicionC + 1);
+                if (posicionF + 1 < tableroVisible.length)
+                    destapa(tableroVisible, tableroMinas, posicionF + 1, posicionC);
+                if (posicionF + 1 < tableroVisible.length && posicionC - 1 >= 0)
+                    destapa(tableroVisible, tableroMinas, posicionF + 1, posicionC - 1);
+                if (posicionC - 1 >= 0)
+                    destapa(tableroVisible, tableroMinas, posicionF, posicionC - 1);
+                if (posicionF - 1 >= 0 && posicionC - 1 >= 0)
+                    destapa(tableroVisible, tableroMinas, posicionF - 1, posicionC - 1);
+            } else {
                 String qmaString = Integer.toString(qma);
                 char qmaChar = qmaString.charAt(0);
                 tableroVisible[posicionF][posicionC] = qmaChar;
-
 
             }
         }

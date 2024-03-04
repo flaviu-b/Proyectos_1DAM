@@ -42,7 +42,4 @@ public class Ej1_9 {
        r1.y1 = 7; 
 
     }
-    private static rellenarFecha(){
-        
-    }
 }

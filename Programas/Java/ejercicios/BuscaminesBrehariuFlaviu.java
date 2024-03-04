@@ -6,7 +6,7 @@ import funciones.Teclat;
 
 public class BuscaminesBrehariuFlaviu {
     static char tapado = 'X';
-    static char destapado = ' ';40
+    static char destapado = ' ';
     static char bandera =  'P';
     static char bomba = '#';
     static String verde= "\033[32m";

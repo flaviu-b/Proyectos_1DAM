@@ -24,7 +24,7 @@ class Rectangulo {
 }
 
 
-public class Ej1_9 {
+public class ej1_4 {
     public static void main(String[] args) {
         Fecha nacimiento = new Fecha();
         nacimiento.dia = 19;
